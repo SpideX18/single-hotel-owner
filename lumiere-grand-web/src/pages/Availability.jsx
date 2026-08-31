@@ -5,12 +5,14 @@ import { BookingWidget } from "@/components/site/BookingWidget";
 import { RoomCard } from "@/components/site/RoomCard";
 import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
 import { useRoomTypes } from "@/hooks/useRoomTypes";
+import { useHotelSettings } from "@/hooks/useHotel";
 import { addDays, todayISO } from "@/lib/booking";
 
 export default function AvailabilityPage() {
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const { data: roomTypes = [], isLoading } = useRoomTypes();
+  const { data: hotel } = useHotelSettings();
 
   const checkIn = params.get("checkIn") || todayISO();
   const checkOut = params.get("checkOut") || addDays(todayISO(), 3);
@@ -25,7 +27,7 @@ export default function AvailabilityPage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Availability" title="Find Your Room" />
+      <PageHeader eyebrow="Availability" title="Find Your Room" image={hotel?.heroImages?.[0] || hotel?.heroImage} />
       <Section className="pt-10">
         <BookingWidget initial={{ checkIn, checkOut, guests, rooms }} onSearch={handleSearch} />
       </Section>

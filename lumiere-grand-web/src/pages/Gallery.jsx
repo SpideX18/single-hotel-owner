@@ -16,7 +16,12 @@ export default function GalleryPage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Visual Tour" title="Gallery" description="A look at the property, rooms and grounds." />
+      <PageHeader
+        eyebrow="Visual Tour"
+        title="Gallery"
+        description="A look at the property, rooms and grounds."
+        image={hotel?.heroImages?.[0] || hotel?.heroImage}
+      />
       <Section>
         {images.length === 0 ? (
           <div className="border border-dashed border-border py-24 text-center">

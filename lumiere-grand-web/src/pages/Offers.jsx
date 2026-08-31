@@ -5,15 +5,22 @@ import { SmartImage } from "@/components/common/SmartImage";
 import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { offersApi } from "@/hooks/useContent";
+import { useHotelSettings } from "@/hooks/useHotel";
 import { formatDate } from "@/lib/booking";
 
 export default function OffersPage() {
   const { data: offers = [], isLoading } = offersApi.useList();
+  const { data: hotel } = useHotelSettings();
   const active = offers.filter((o) => o.active);
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Seasonal" title="Offers & Packages" description="Considered packages curated for every kind of stay." />
+      <PageHeader
+        eyebrow="Seasonal"
+        title="Offers & Packages"
+        description="Considered packages curated for every kind of stay."
+        image={hotel?.heroImages?.[0] || hotel?.heroImage}
+      />
       <Section>
         {isLoading ? (
           <p className="py-16 text-center text-sm text-muted-foreground">Loading offers…</p>

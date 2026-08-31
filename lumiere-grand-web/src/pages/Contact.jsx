@@ -26,7 +26,7 @@ export default function ContactPage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Get in touch" title="Contact" />
+      <PageHeader eyebrow="Get in touch" title="Contact" image={hotel?.heroImages?.[0] || hotel?.heroImage} />
       <Section>
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
           <div>

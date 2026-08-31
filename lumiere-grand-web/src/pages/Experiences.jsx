@@ -2,14 +2,21 @@ import { Section } from "@/components/common/Section";
 import { SmartImage } from "@/components/common/SmartImage";
 import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
 import { experiencesApi } from "@/hooks/useContent";
+import { useHotelSettings } from "@/hooks/useHotel";
 import { currency } from "@/lib/booking";
 
 export default function ExperiencesPage() {
   const { data: experiences = [], isLoading } = experiencesApi.useList();
+  const { data: hotel } = useHotelSettings();
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Beyond the Room" title="Experiences" description="Curated activities and services available during your stay." />
+      <PageHeader
+        eyebrow="Beyond the Room"
+        title="Experiences"
+        description="Curated activities and services available during your stay."
+        image={hotel?.heroImages?.[0] || hotel?.heroImage}
+      />
       <Section>
         {isLoading ? (
           <p className="py-16 text-center text-sm text-muted-foreground">Loading experiences…</p>

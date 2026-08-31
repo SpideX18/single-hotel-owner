@@ -8,7 +8,7 @@ export default function AboutPage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="About" title={hotel?.name || "About Us"} />
+      <PageHeader eyebrow="About" title={hotel?.name || "About Us"} image={hotel?.heroImages?.[0] || hotel?.heroImage} />
       <Section>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <SmartImage src={hotel?.heroImage} alt={hotel?.name} className="aspect-[4/5] w-full object-cover" />

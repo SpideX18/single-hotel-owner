@@ -8,6 +8,7 @@ import { SmartImage } from "@/components/common/SmartImage";
 import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { useRoomTypes } from "@/hooks/useRoomTypes";
+import { useHotelSettings } from "@/hooks/useHotel";
 import { currency } from "@/lib/booking";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ const MAX = 3;
 
 export default function ComparePage() {
   const { data: roomTypes = [] } = useRoomTypes();
+  const { data: hotel } = useHotelSettings();
   const [selected, setSelected] = useState([]);
 
   useEffect(() => {
@@ -45,7 +47,12 @@ export default function ComparePage() {
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow="Decide with confidence" title="Compare Rooms" description="Select up to three room types to see them side by side." />
+      <PageHeader
+        eyebrow="Decide with confidence"
+        title="Compare Rooms"
+        description="Select up to three room types to see them side by side."
+        image={hotel?.heroImages?.[0] || hotel?.heroImage}
+      />
 
       <Section>
         {roomTypes.length === 0 ? (

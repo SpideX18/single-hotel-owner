@@ -31,6 +31,7 @@ export default function RoomsPage() {
         eyebrow="Accommodation"
         title="Rooms & Suites"
         description={hotel?.name ? `Explore the room categories at ${hotel.name}.` : "Explore our room categories."}
+        image={hotel?.heroImages?.[0] || hotel?.heroImage}
       />
 
       <Section className="py-10 md:py-12">
