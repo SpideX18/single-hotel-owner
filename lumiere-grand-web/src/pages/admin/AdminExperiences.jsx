@@ -43,16 +43,36 @@ export default function AdminExperiences() {
   async function handleUpload(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!editingId) {
-      set("image", URL.createObjectURL(file));
-      toast.message("Save the experience first, then re-open it to upload the real image.");
-      return;
+
+    let targetId = editingId;
+
+    // Not saved yet — create the record first so the upload attaches to
+    // a real id. Avoids ever storing a temporary blob: link that dies
+    // when the tab closes.
+    if (!targetId) {
+      if (!form.name) {
+        toast.error("Add a name before uploading an image");
+        e.target.value = "";
+        return;
+      }
+      try {
+        const created = await create.mutateAsync(form);
+        targetId = created.id;
+        setEditingId(created.id);
+      } catch (err) {
+        toast.error(errorMessage(err, "Could not save experience"));
+        e.target.value = "";
+        return;
+      }
     }
+
     try {
-      const url = await uploadImage.mutateAsync({ id: editingId, file });
+      const url = await uploadImage.mutateAsync({ id: targetId, file });
       set("image", url);
     } catch (err) {
       toast.error(errorMessage(err, "Upload failed"));
+    } finally {
+      e.target.value = "";
     }
   }
 

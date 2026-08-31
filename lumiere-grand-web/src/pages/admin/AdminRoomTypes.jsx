@@ -86,20 +86,40 @@ export default function AdminRoomTypes() {
   async function handleImageUpload(e) {
     const files = e.target.files;
     if (!files?.length) return;
-    if (editingId) {
-      try {
-        const urls = await uploadImages.mutateAsync({ id: editingId, files });
-        set("images", [...(form.images || []), ...urls]);
-      } catch (err) {
-        toast.error(errorMessage(err, "Upload failed"));
+
+    let targetId = editingId;
+
+    // Not saved yet — create the record first (silently) so the upload
+    // has a real id to attach to. This replaces the old "save first,
+    // then re-open to add images" step, and means a real, permanent URL
+    // is stored from the very first upload — never a temporary blob:
+    // link that dies when the tab closes.
+    if (!targetId) {
+      if (!form.name || !form.basePrice) {
+        toast.error("Add a name and price before uploading images");
+        e.target.value = "";
+        return;
       }
-    } else {
-      // Not saved yet — preview locally, upload happens after first save via edit.
-      const previews = Array.from(files).map((f) => URL.createObjectURL(f));
-      set("images", [...(form.images || []), ...previews]);
-      toast.message("Save the room first, then re-open it to upload real images.");
+      try {
+        const created = await createRoomType.mutateAsync(form);
+        targetId = created.id;
+        setEditingId(created.id);
+      } catch (err) {
+        toast.error(errorMessage(err, "Could not save room type"));
+        e.target.value = "";
+        return;
+      }
     }
-    e.target.value = "";
+
+    try {
+      const urls = await uploadImages.mutateAsync({ id: targetId, files });
+      set("images", [...(form.images || []), ...urls]);
+      toast.success(editingId ? "Images added" : "Room type created and images added");
+    } catch (err) {
+      toast.error(errorMessage(err, "Upload failed"));
+    } finally {
+      e.target.value = "";
+    }
   }
 
   async function save() {
