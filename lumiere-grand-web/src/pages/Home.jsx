@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <SiteLayout transparentHeader>
       {/* Hero */}
-      <section className="relative min-h-[92vh] overflow-hidden bg-primary">
+      <section className="relative overflow-hidden bg-primary">
         <SmartImage
           src={hotel?.heroImage}
           alt={hotel?.name || "Hotel"}
@@ -37,7 +37,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/35 to-black/80" />
 
-        <div className="relative mx-auto flex min-h-[92vh] w-full max-w-7xl flex-col justify-center px-5 pb-56 pt-28 sm:px-8 md:pb-48 lg:px-12">
+        <div className="relative mx-auto flex min-h-[78vh] w-full max-w-7xl flex-col justify-center px-5 py-24 sm:px-8 lg:px-12">
           <div className="fade-up max-w-3xl">
             {hotel?.tagline ? (
               <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-white/70">{hotel.tagline}</p>
@@ -57,17 +57,15 @@ export default function Home() {
               </Button>
             </div>
           </div>
-        </div>
 
-        <div className="absolute inset-x-0 bottom-0 translate-y-1/3 px-5 sm:px-8 lg:px-12">
-          <div className="mx-auto w-full max-w-6xl">
+          <div className="mt-12 w-full max-w-6xl">
             <BookingWidget />
           </div>
         </div>
       </section>
 
       {/* Hotel info */}
-      <Section className="pt-40 md:pt-48">
+      <Section>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <div className="relative">
             <SmartImage
